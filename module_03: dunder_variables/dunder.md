@@ -260,5 +260,49 @@ This keeps the module clean and prevents unwanted code from running during impor
 - The statement `if __name__ == "__main__":` ensures that certain code runs **only when the file is executed directly**.
 - It is commonly used for testing, demonstrations, and defining the entry point of a Python program.
 
+## **Starter in Python**
+
+Unlike C, C++, or Java, Python does **not** require a predefined `main()` function as the entry point of a program. Execution begins from the **first executable statement** in the file.
+
+However, in real-world applications and large projects, it is considered a good programming practice to define our own `main()` function. This makes the program more organized, modular, and easier to maintain.
+
+### Example
+
+```python
+def main():
+    print("Welcome to Python")
+
+main()
+```
+
+---
+
+## A Better Practice
+
+To ensure that the `main()` function is executed **only when the file is run directly**, place the function call inside the following block:
+
+```python
+def main():
+    print("Welcome to Python")
+
+if __name__ == "__main__":
+    main()
+```
+
+---
+
+## Why Use a `main()` Function?
+
+Using a `main()` function provides several advantages:
+
+- Makes the program structure cleaner and more organized.
+- Improves readability by separating the program's starting point from other functions.
+- Makes the code easier to debug and maintain.
+- Prevents the main execution code from running when the file is imported as a module.
+- Follows the coding style commonly used in professional and industrial Python projects.
+
+> [!NOTE]
+> Although Python does not enforce the use of a `main()` function, it is considered a best practice in larger applications. Most professional Python projects use a `main()` function together with `if __name__ == "__main__":` to clearly define the program's entry point.
+
 ## Author
 Ritesh Jillewad
