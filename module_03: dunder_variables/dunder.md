@@ -1,27 +1,264 @@
-# **Dunder (__) Variables**
+# Dunder (`__`) Variables
 
-Dunder variables, a.k.a (double underscore) varaibles are special variables or magic attributes. These are variables whose _**"names start and end with double underscore"**_.
+Dunder variables (short for **double underscore variables**) are special variables, also known as **magic attributes**, provided by Python.
 
-Ex:
-```
+Their names always **start and end with double underscores (`__`)**.
+
+## Examples
+
+```python
 __name__
 __dict__
 __class__
 __doc__
 ```
 
-These are created and maintained by python to store metadata about the objects, classes and functions. These are built-in containers that tell us:
-* What an object is
-* What class it belongs to
-* What attributes it contains
+These variables are automatically created and maintained by the Python interpreter to store **metadata** about modules, objects, classes, and functions.
 
->[!IMPORTANT]
->Dunder variables, basically answers the question, **"tu kon ahhe, ani tuza naav kay ahhe ?"**. Since there is not entry point function in python, so every file that we run, runs from the 1st indention. So when we use dunder method, it will tell that this file is internally called as `__main__`.
+They provide information such as:
 
-## **__name__ Variable**
-This variable is very important at module level. **It is used to represent the name of module.**
+- What an object is
+- Which class it belongs to
+- What attributes it contains
+- How Python internally identifies it
 
-Ex: filename: `test.py`. If we run the following command
-```python
-print(__name__)            # This will return __main__
+> [!IMPORTANT]
+> Think of dunder variables as answering the questions:
+>
+> **"Who are you, and what is your name?"**
+>
+> In Marathi:
+>
+> **"तु कोण आहेस, आणि तुझं नाव काय आहे?"**
+>
+> Since Python does not have a dedicated entry point function like `main()` in C or Java, execution begins from the first executable statement of the file.
+>
+> Python internally assigns the special variable `__name__` to identify whether the file is being executed directly or imported as a module.
+
+---
+
+## `__name__` Variable
+
+The `__name__` variable is one of the most important dunder variables.
+
+It represents the **name of the current module**.
+
+### Example
+
+Suppose the filename is:
+
+```text
+test.py
 ```
+
+```python
+print(__name__)
+```
+
+### Output
+
+```text
+__main__
+```
+
+---
+
+## When a Python File is Executed Directly
+
+Before executing any Python file, the interpreter automatically initializes several special variables.
+
+One of these is:
+
+```python
+__name__
+```
+
+If the file is **executed directly**, Python assigns:
+
+```python
+__name__ = "__main__"
+```
+
+### Example
+
+```python
+print("Always executed")
+
+if __name__ == "__main__":
+    print("Executed only when the file is run directly")
+else:
+    print("Executed when imported")
+```
+
+### Output
+
+```text
+Always executed
+Executed only when the file is run directly
+```
+
+Since the file is executed directly, its `__name__` becomes `__main__`.
+
+---
+
+## When the File is Imported
+
+Suppose we have a file named:
+
+```text
+script.py
+```
+
+```python
+print(__name__)
+```
+
+Now create another file:
+
+```python
+import script
+```
+
+In this case, Python **does not** assign `__main__` to the imported file.
+
+Instead:
+
+```python
+__name__ = "script"
+```
+
+Therefore, the following block will **not execute**:
+
+```python
+if __name__ == "__main__":
+    print("Executed only when run directly")
+```
+
+because
+
+```python
+__name__ == "script"
+```
+
+---
+
+## Need for `if __name__ == "__main__"`
+
+At first, this statement may seem unnecessary.
+
+However, it solves an important problem.
+
+Suppose you have a file containing useful functions.
+
+### calculator.py
+
+```python
+def add(a, b):
+    return a + b
+
+print("Calculator module loaded")
+```
+
+Now another file imports it.
+
+### main.py
+
+```python
+import calculator
+
+print(calculator.add(10, 20))
+```
+
+### Output
+
+```text
+Calculator module loaded
+30
+```
+
+The message
+
+```text
+Calculator module loaded
+```
+
+was printed even though we only wanted to use the `add()` function.
+
+This happens because **Python executes every top-level statement while importing a module.**
+
+---
+
+## Solution
+
+Place testing or demonstration code inside the following block:
+
+```python
+if __name__ == "__main__":
+    # Testing code
+```
+
+### calculator.py
+
+```python
+def add(a, b):
+    return a + b
+
+if __name__ == "__main__":
+    print(add(10, 20))
+```
+
+### main.py
+
+```python
+import calculator
+
+print(calculator.add(5, 7))
+```
+
+### Output
+
+```text
+12
+```
+
+Notice that the testing code inside `calculator.py` was **not executed** during import.
+
+---
+
+## Why is This Useful?
+
+Using
+
+```python
+if __name__ == "__main__":
+```
+
+allows the same Python file to serve two purposes:
+
+- As an executable program
+- As an importable module
+
+This keeps the module clean and prevents unwanted code from running during imports.
+
+---
+
+## Summary
+
+| Situation | Value of `__name__` |
+|-----------|---------------------|
+| File executed directly | `__main__` |
+| File imported as a module | Module name |
+
+---
+
+## Key Points
+
+- `__name__` is a special (dunder) variable.
+- It stores the name of the current module.
+- When a file is run directly, `__name__` is set to `__main__`.
+- When imported, `__name__` becomes the module's filename.
+- The statement `if __name__ == "__main__":` ensures that certain code runs **only when the file is executed directly**.
+- It is commonly used for testing, demonstrations, and defining the entry point of a Python program.
+
+## Author
+Ritesh Jillewad
